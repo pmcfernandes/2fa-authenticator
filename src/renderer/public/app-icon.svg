@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">2FA Authenticator icon</title>
+  <defs>
+    <linearGradient id="bg" x1="36" y1="28" x2="220" y2="228" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38bdf8"/>
+      <stop offset="0.55" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="74" y1="48" x2="178" y2="190" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#eff6ff"/>
+      <stop offset="1" stop-color="#bfdbfe"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="#0a0e1a"/>
+  <rect x="14" y="14" width="228" height="228" rx="48" fill="url(#bg)"/>
+  <path d="M128 42 193 69v49c0 43-25 78-65 96-40-18-65-53-65-96V69l65-27Z" fill="url(#shield)" stroke="#ffffff" stroke-opacity=".7" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M91 117h74a12 12 0 0 1 12 12v47a12 12 0 0 1-12 12H91a12 12 0 0 1-12-12v-47a12 12 0 0 1 12-12Z" fill="#0f172a" opacity=".92"/>
+  <path d="M100 117v-12c0-18 12-31 28-31s28 13 28 31v12h-18v-12c0-8-4-14-10-14s-10 6-10 14v12h-18Z" fill="#0f172a" opacity=".92"/>
+  <circle cx="128" cy="148" r="12" fill="#38bdf8"/>
+  <path d="M128 157v18" stroke="#38bdf8" stroke-width="9" stroke-linecap="round"/>
+  <path d="M162 88h25v17h-25v14h23v17h-46v-13c0-8 4-14 13-19l11-6c4-2 5-4 5-7 0-4-3-6-8-6-6 0-12 3-18 8l-9-14c8-8 18-12 29-12 17 0 28 9 28 23 0 9-5 17-16 23l-12 6v3Z" fill="#0a0e1a" opacity=".9"/>
+</svg>

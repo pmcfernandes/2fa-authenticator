@@ -1,16 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ShieldCheck } from 'lucide-react'
 import AddModal from './components/AddModal'
 import CodeList from './components/CodeList'
 import EmptyState from './components/EmptyState'
 import Header from './components/Header'
 import SettingsModal from './components/SettingsModal'
+import LockScreen from './components/LockScreen'
 import { useAccounts } from './hooks/useAccounts'
 
 export default function App() {
   const accounts = useAccounts()
   const [addOpen, setAddOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [checkingLock, setCheckingLock] = useState(true)
+  const [isLocked, setIsLocked] = useState(false)
+
+  useEffect(() => {
+    window.api.isAppPasswordConfigured().then((configured) => {
+      setIsLocked(configured)
+      setCheckingLock(false)
+    })
+  }, [])
+
+  if (checkingLock) {
+    return <main className="app-shell"><div className="loading-panel">Checking secure vault...</div></main>
+  }
+
+  if (isLocked) {
+    return <LockScreen onUnlock={() => setIsLocked(false)} />
+  }
 
   return (
     <main className="app-shell">

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, session, nativeTheme, safeStorage, Menu, clipboard } = require('electron')
 const { join } = require('path')
 const fs = require('fs')
+const crypto = require('crypto')
 
 let store
 let mainWindow
@@ -67,6 +68,10 @@ function setAccounts(accounts) {
 }
 
 function createWindow() {
+  const iconPath = app.isPackaged
+    ? join(__dirname, '../renderer/app-icon.png')
+    : join(__dirname, '../../src/renderer/public/app-icon.png')
+
   mainWindow = new BrowserWindow({
     width: 1120,
     height: 760,
@@ -74,6 +79,7 @@ function createWindow() {
     minHeight: 620,
     backgroundColor: '#0a0e1a',
     title: '2FA Authenticator',
+    icon: iconPath,
     autoHideMenuBar: true,
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 16, y: 16 },
@@ -215,6 +221,32 @@ app.whenReady().then(async () => {
   ipcMain.handle('app:version', () => app.getVersion())
   ipcMain.handle('clipboard:writeText', (_event, text) => {
     clipboard.writeText(String(text || ''))
+    return true
+  })
+
+  ipcMain.handle('auth:isConfigured', () => {
+    return !!store.get('appPasswordHash')
+  })
+
+  ipcMain.handle('auth:verify', (_event, password) => {
+    const hash = store.get('appPasswordHash')
+    const salt = store.get('appPasswordSalt')
+    if (!hash || !salt) return true
+    
+    const derivedKey = crypto.scryptSync(password, salt, 64).toString('hex')
+    return hash === derivedKey
+  })
+
+  ipcMain.handle('auth:setPassword', (_event, password) => {
+    if (!password) {
+      store.delete('appPasswordHash')
+      store.delete('appPasswordSalt')
+      return true
+    }
+    const salt = crypto.randomBytes(16).toString('hex')
+    const hash = crypto.scryptSync(password, salt, 64).toString('hex')
+    store.set('appPasswordSalt', salt)
+    store.set('appPasswordHash', hash)
     return true
   })
 

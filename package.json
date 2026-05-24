@@ -1,7 +1,8 @@
 {
   "name": "2fa-authenticator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A desktop 2FA authenticator app for Windows",
+  "author": "Pedro Fernandes",
   "main": "./out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",
@@ -37,6 +38,7 @@
       "package.json"
     ],
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         "nsis"
       ],

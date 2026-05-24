@@ -15,5 +15,8 @@ contextBridge.exposeInMainWorld('api', {
   importAccountsFile: () => ipcRenderer.invoke('import:accounts'),
   isSafeStorageAvailable: () => ipcRenderer.invoke('safeStorage:available'),
   getAppVersion: () => ipcRenderer.invoke('app:version'),
-  copyText: (text) => ipcRenderer.invoke('clipboard:writeText', text)
+  copyText: (text) => ipcRenderer.invoke('clipboard:writeText', text),
+  isAppPasswordConfigured: () => ipcRenderer.invoke('auth:isConfigured'),
+  verifyAppPassword: (password) => ipcRenderer.invoke('auth:verify', password),
+  setAppPassword: (password) => ipcRenderer.invoke('auth:setPassword', password)
 })
