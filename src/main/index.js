@@ -8,6 +8,12 @@ let mainWindow
 
 nativeTheme.themeSource = 'dark'
 
+const gotSingleInstanceLock = app.requestSingleInstanceLock()
+
+if (!gotSingleInstanceLock) {
+  app.quit()
+}
+
 function logStartupError(error) {
   const message = error && error.stack ? error.stack : String(error)
   console.error(message)
@@ -20,6 +26,13 @@ function logStartupError(error) {
 
 process.on('uncaughtException', logStartupError)
 process.on('unhandledRejection', logStartupError)
+
+app.on('second-instance', () => {
+  if (!mainWindow) return
+  if (mainWindow.isMinimized()) mainWindow.restore()
+  mainWindow.show()
+  mainWindow.focus()
+})
 
 function normalizeAccounts(accounts) {
   if (!Array.isArray(accounts)) return []

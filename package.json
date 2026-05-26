@@ -1,7 +1,7 @@
 {
   "name": "2fa-authenticator",
-  "version": "1.0.1",
-  "description": "A desktop 2FA authenticator app for Windows",
+  "version": "1.0.2",
+  "description": "A desktop 2FA authenticator app",
   "license": "MIT",
   "author": {
     "name": "Pedro Fernandes",
@@ -13,6 +13,7 @@
     "build": "electron-vite build",
     "dist": "npm run build && electron-builder --win nsis",
     "dist:linux": "npm run build && electron-builder --linux deb",
+    "dist:mac": "npm run build && electron-builder --mac dmg",
     "start": "electron-vite preview",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -55,6 +56,13 @@
         "deb"
       ],
       "artifactName": "${productName}-${version}-Setup.${ext}"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg"
+      ],
+      "artifactName": "${productName}-${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,

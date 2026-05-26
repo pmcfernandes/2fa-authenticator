@@ -1,6 +1,6 @@
 # 2FA Authenticator
 
-A desktop two-factor authentication app for Windows, built with Electron, React, and Vite. It works like Google Authenticator: add accounts, view live TOTP codes, copy codes, and keep secrets stored locally on your machine.
+A desktop two-factor authentication app for Windows, macOS, and Linux, built with Electron, React, and Vite. It works like Google Authenticator: add accounts, view live TOTP codes, copy codes, and keep secrets stored locally on your machine.
 
 ## Features
 
@@ -9,7 +9,7 @@ A desktop two-factor authentication app for Windows, built with Electron, React,
 - Add accounts by uploading a QR image
 - Manual account entry with Base32 secret support
 - Search saved accounts
-- Copy codes to the Windows clipboard
+- Copy codes to the system clipboard
 - Confirm before deleting an account
 - Encrypted import and export using password-protected `.2fa` backup files
 - Local encrypted persistence using Electron `safeStorage` and `electron-store`
@@ -51,10 +51,22 @@ Create a Windows installer:
 npm run dist
 ```
 
-The installer is generated in:
+Create a Linux `.deb` package:
+
+```bash
+npm run dist:linux
+```
+
+Create a macOS `.dmg` package:
+
+```bash
+npm run dist:mac
+```
+
+The Windows installer is generated in:
 
 ```text
-release/2FA Authenticator-1.0.0-Setup.exe
+release/2FA Authenticator-1.0.1-Setup.exe
 ```
 
 An unpacked executable is also generated in:
@@ -62,6 +74,8 @@ An unpacked executable is also generated in:
 ```text
 release/win-unpacked/2FA Authenticator.exe
 ```
+
+macOS distribution builds must be run on macOS.
 
 ## Security Notes
 
