@@ -2,6 +2,7 @@ node_modules/
 dist/
 out/
 release/
+src-tauri/target/
 package-lock.json
 
 # Optional: Ignore environment variable files

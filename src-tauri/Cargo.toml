@@ -1,0 +1,27 @@
+[package]
+name = "twofactor-authenticator"
+version = "1.1.1"
+description = "A desktop 2FA authenticator app"
+authors = ["Pedro Fernandes <hello@impedro.com>"]
+license = "MIT"
+edition = "2021"
+
+[lib]
+name = "twofactor_authenticator_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+aes-gcm = "0.10"
+arboard = "3"
+base64 = "0.22"
+hex = "0.4"
+keyring = "2"
+rand = "0.8"
+rfd = "0.15"
+scrypt = "0.11"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = [] }

@@ -1,6 +1,6 @@
 # 2FA Authenticator
 
-A desktop two-factor authentication app for Windows, macOS, and Linux, built with Electron, React, and Vite. It works like Google Authenticator: add accounts, view live TOTP codes, copy codes, and keep secrets stored locally on your machine.
+A desktop two-factor authentication app for Windows, macOS, and Linux, built with Tauri, React, and Vite. It works like Google Authenticator: add accounts, view live TOTP codes, copy codes, and keep secrets stored locally on your machine.
 
 ## Features
 
@@ -12,18 +12,18 @@ A desktop two-factor authentication app for Windows, macOS, and Linux, built wit
 - Copy codes to the system clipboard
 - Confirm before deleting an account
 - Encrypted import and export using password-protected `.2fa` backup files
-- Local encrypted persistence using Electron `safeStorage` and `electron-store`
+- Local encrypted persistence using Tauri commands, AES-GCM, and the operating system keyring
 - Dark mode UI with simple blue accents
 
 ## Tech Stack
 
-- Electron with `electron-vite`
+- Rust command handlers for local persistence, file dialogs, and clipboard access
+- Tauri 2
 - React 18
+- Vanilla CSS and Lucide React icons
 - `otpauth` for TOTP generation and `otpauth://` URI parsing
 - `@yudiel/react-qr-scanner` for webcam QR scanning
 - `jsqr` for QR decoding from uploaded images
-- `electron-store` and Electron `safeStorage` for local persistence
-- Vanilla CSS and Lucide React icons
 
 ## Development
 
@@ -45,40 +45,30 @@ Build the app:
 npm run build
 ```
 
-Create a Windows installer:
+Create a desktop app bundle:
 
 ```bash
 npm run dist
 ```
 
-Create a Linux `.deb` package:
-
-```bash
-npm run dist:linux
-```
-
-Create a macOS `.dmg` package:
-
-```bash
-npm run dist:mac
-```
-
-The Windows installer is generated in:
+The generated bundles are written under:
 
 ```text
-release/2FA Authenticator-1.0.1-Setup.exe
+src-tauri/target/release/bundle
 ```
 
-An unpacked executable is also generated in:
+Platform-specific bundles must be built on their target platform.
 
-```text
-release/win-unpacked/2FA Authenticator.exe
-```
+## Requirements
 
-macOS distribution builds must be run on macOS.
+- Node.js and npm
+- Rust and Cargo
+- Tauri platform prerequisites for your operating system
+
+After changing dependencies, run `npm install` to refresh `package-lock.json`.
 
 ## Security Notes
 
-Account secrets are stored locally and protected with Electron `safeStorage` when available. Exported backups are encrypted with AES-GCM using a key derived from the export password.
+Account secrets are stored locally and encrypted with AES-GCM. The account encryption key is stored in the operating system keyring. Exported backups are encrypted with AES-GCM using a key derived from the export password.
 
 This app does not sync data to a server. Keep your backup password safe, because encrypted backups cannot be restored without it.

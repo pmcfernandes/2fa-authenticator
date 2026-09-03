@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 
 /**
- * Custom hook for managing accounts stored via Electron IPC
+ * Custom hook for managing accounts stored via the desktop API bridge.
  */
 export function useAccounts() {
   const [accounts, setAccounts] = useState([])

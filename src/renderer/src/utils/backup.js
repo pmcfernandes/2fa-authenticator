@@ -1,6 +1,6 @@
 /**
  * Encrypt accounts array with a password using AES-256-GCM
- * Uses Web Crypto API (available in Electron renderer)
+ * Uses Web Crypto API in the desktop renderer.
  */
 
 const PBKDF2_ITERATIONS = 100000
