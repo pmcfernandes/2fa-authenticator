@@ -13,7 +13,9 @@ A desktop two-factor authentication app for Windows, macOS, and Linux, built wit
 - Confirm before deleting an account
 - Encrypted import and export using password-protected `.2fa` backup files
 - Local encrypted persistence using Tauri commands, AES-GCM, and the operating system keyring
-- Dark mode UI with simple blue accents
+- Light and dark mode with a clean black-and-white design
+- Multi-language support: English, French, Spanish, Portuguese, and German
+- App lock with password protection
 
 ## Tech Stack
 

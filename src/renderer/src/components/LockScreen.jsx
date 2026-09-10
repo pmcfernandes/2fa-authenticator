@@ -1,7 +1,9 @@
 import { Lock, ArrowRight, ShieldAlert } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function LockScreen({ onUnlock }) {
+  const { t } = useTranslation()
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -17,11 +19,11 @@ export default function LockScreen({ onUnlock }) {
       if (isValid) {
         onUnlock()
       } else {
-        setError('Incorrect password')
+        setError(t('lock.incorrectPassword'))
         setPassword('')
       }
     } catch (err) {
-      setError('An error occurred during verification')
+      setError(t('lock.verificationError'))
     } finally {
       setLoading(false)
     }
@@ -33,13 +35,13 @@ export default function LockScreen({ onUnlock }) {
         <div className="lock-icon-wrapper">
           <Lock size={48} />
         </div>
-        <h1>App Locked</h1>
-        <p>Please enter your application password to access the vault.</p>
+        <h1>{t('lock.title')}</h1>
+        <p>{t('lock.description')}</p>
 
         <form onSubmit={handleSubmit} className="lock-form">
           <input
             type="password"
-            placeholder="Enter password"
+            placeholder={t('lock.placeholder')}
             value={password}
             onChange={(e) => {
               setPassword(e.target.value)
@@ -49,7 +51,7 @@ export default function LockScreen({ onUnlock }) {
             autoFocus
           />
           <button type="submit" className="primary-button" disabled={loading || !password}>
-            {loading ? 'Verifying...' : 'Unlock'} <ArrowRight size={18} />
+            {loading ? t('lock.verifying') : t('lock.unlock')} <ArrowRight size={18} />
           </button>
         </form>
 

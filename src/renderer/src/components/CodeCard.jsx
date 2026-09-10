@@ -1,10 +1,12 @@
 import { Check, Copy, Trash2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTOTP } from '../hooks/useTOTP'
+import { useTranslation } from '../hooks/useTranslation'
 
 const colors = ['#2563eb', '#0ea5e9', '#38bdf8', '#14b8a6', '#22c55e', '#facc15']
 
 export default function CodeCard({ account, onDelete }) {
+  const { t } = useTranslation()
   const { code, secondsRemaining, period } = useTOTP(account)
   const [copied, setCopied] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -42,19 +44,19 @@ export default function CodeCard({ account, onDelete }) {
           }
           onDelete(account.id)
         }}
-        title={confirmDelete ? 'Click again to delete' : 'Delete account'}
+        title={confirmDelete ? t('codeCard.clickToDelete') : t('codeCard.deleteAccount')}
       >
-        {confirmDelete ? 'Delete?' : <Trash2 size={16} />}
+        {confirmDelete ? t('codeCard.deleteConfirm') : <Trash2 size={16} />}
       </button>
       <div className="card-meta">
         <span className="avatar">{(account.issuer || '?').charAt(0).toUpperCase()}</span>
         <div>
-          <h3>{account.issuer || 'Unknown'}</h3>
-          <p>{account.label || 'Default account'}</p>
+          <h3>{account.issuer || t('codeCard.unknown')}</h3>
+          <p>{account.label || t('codeCard.defaultAccount')}</p>
         </div>
       </div>
 
-      <button className="code-button" onClick={copyCode} title="Copy code">
+      <button className="code-button" onClick={copyCode} title={t('codeCard.copyCode')}>
         <span>{displayCode}</span>
         <span className="copy-icon" aria-hidden="true">
           {copied ? <Check size={20} /> : <Copy size={20} />}
@@ -65,7 +67,7 @@ export default function CodeCard({ account, onDelete }) {
         <div className="ring" style={{ '--progress': `${progress}%` }}>
           <span>{secondsRemaining}</span>
         </div>
-        <span className="timer-copy">Refreshes every {period}s</span>
+        <span className="timer-copy">{t('codeCard.refreshes', { period })}</span>
       </div>
     </article>
   )

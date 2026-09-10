@@ -1,35 +1,29 @@
 import { FileImage, Upload } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { parseOtpAuthUri } from '../utils/otp'
-import { decodeQRFromDataUrl, decodeQRFromFile } from '../utils/qr'
+import { decodeQRFromDataUrl } from '../utils/qr'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function QRUpload({ onAccount }) {
-  const inputRef = useRef(null)
+  const { t } = useTranslation()
   const [preview, setPreview] = useState('')
-  const [status, setStatus] = useState('Drop an image or browse for a QR code.')
+  const [status, setStatus] = useState('')
+
+  useEffect(() => {
+    setStatus(t('qrUpload.dropOrClick'))
+  }, [t])
 
   async function handleDataUrl(dataUrl) {
     setPreview(dataUrl)
-    setStatus('Reading QR code...')
+    setStatus(t('qrUpload.reading'))
     const data = await decodeQRFromDataUrl(dataUrl)
     const account = data ? parseOtpAuthUri(data) : null
-    if (!account) return setStatus('No valid otpauth QR code found.')
-    setStatus('Account found.')
+    if (!account) return setStatus(t('qrUpload.noValid'))
+    setStatus(t('qrUpload.accountFound'))
     onAccount(account)
   }
 
-  async function handleFile(file) {
-    if (!file) return
-    setPreview(URL.createObjectURL(file))
-    setStatus('Reading QR code...')
-    const data = await decodeQRFromFile(file)
-    const account = data ? parseOtpAuthUri(data) : null
-    if (!account) return setStatus('No valid otpauth QR code found.')
-    setStatus('Account found.')
-    onAccount(account)
-  }
-
-  async function openNativePicker() {
+  async function openPicker() {
     const dataUrl = await window.api.openFileDialog()
     if (dataUrl) handleDataUrl(dataUrl)
   }
@@ -39,25 +33,22 @@ export default function QRUpload({ onAccount }) {
       className="upload-zone"
       onDrop={(event) => {
         event.preventDefault()
-        handleFile(event.dataTransfer.files[0])
+        const file = event.dataTransfer.files[0]
+        if (file) {
+          const reader = new FileReader()
+          reader.onload = () => handleDataUrl(reader.result)
+          reader.readAsDataURL(file)
+        }
       }}
       onDragOver={(event) => event.preventDefault()}
     >
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/png,image/jpeg,image/bmp"
-        hidden
-        onChange={(event) => handleFile(event.target.files[0])}
-      />
-      {preview ? <img src={preview} alt="QR preview" /> : <FileImage size={58} />}
+      {preview ? <img src={preview} alt={t('qrUpload.previewAlt')} /> : <FileImage size={58} />}
       <p>{status}</p>
       <div className="upload-actions">
-        <button className="secondary-button" onClick={() => inputRef.current.click()}>
+        <button className="secondary-button" onClick={openPicker}>
           <Upload size={17} />
-          Browse
+          {t('qrUpload.browse')}
         </button>
-        <button className="ghost-button" onClick={openNativePicker}>System picker</button>
       </div>
     </div>
   )

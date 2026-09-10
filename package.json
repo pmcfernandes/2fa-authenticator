@@ -1,6 +1,6 @@
 {
   "name": "2fa-authenticator",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "A desktop 2FA authenticator app",
   "license": "MIT",
   "author": {
